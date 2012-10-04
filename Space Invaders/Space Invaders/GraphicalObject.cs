@@ -11,6 +11,10 @@ namespace Space_Invaders
     {
         protected Texture2D texture;
         protected Vector2 position;
+        static byte sizeMultiplier = 1;
+
+        public static Main main;
+
         protected float x
         {
             get
@@ -37,14 +41,14 @@ namespace Space_Invaders
         {
             get
             {
-                return texture.Width;
+                return texture.Width * sizeMultiplier;
             }
         }
         protected int height
         {
             get
             {
-                return texture.Height;
+                return texture.Height * sizeMultiplier;
             }
         }
 

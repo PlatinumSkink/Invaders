@@ -17,7 +17,7 @@ namespace Space_Invaders
 
         }
 
-        protected virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             position += movement * direction;
         }

@@ -15,6 +15,20 @@ namespace Space_Invaders
         {
             movement.X = 4;
         }
+        public override void Update(GameTime gameTime)
+        {
+            KeyboardState keyboard = Keyboard.GetState();
+            KeyInput(keyboard);
+            base.Update(gameTime);
+            if (x < 0) 
+            {
+                x = 0;
+            }
+            else if (x > main.width - width) 
+            {
+                x = main.width - width;
+            }
+        }
         protected void KeyInput(KeyboardState ks)
         {
             if (ks.IsKeyDown(Keys.Right)) 
