@@ -15,7 +15,7 @@ namespace Space_Invaders
 
         public static Main main;
 
-        protected float x
+        public float x
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Space_Invaders
                 position.X = value;
             }
         }
-        protected float y
+        public float y
         {
             get
             {
@@ -37,14 +37,14 @@ namespace Space_Invaders
                 position.Y = value;
             }
         }
-        protected int width
+        public int width
         {
             get
             {
                 return texture.Width * sizeMultiplier;
             }
         }
-        protected int height
+        public int height
         {
             get
             {

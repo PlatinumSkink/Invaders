@@ -87,15 +87,33 @@ namespace Space_Invaders
             {
                 if (i < 11)
                 {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invaders3"), Vector2.Zero, 40));
+                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader3"), Vector2.Zero, 40));
+                    invaders[i].x = i * (invaders[i].width + 10);
+                    invaders[i].y = invaders[i].height * 1;
                 }
-                else if (10 < i && i < 33)
+                else if (10 < i && i < 22)
                 {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invaders2"), Vector2.Zero, 20));
+                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
+                    invaders[i].x = (i - 11) * invaders[i].width;
+                    invaders[i].y = invaders[i].height * 2;
                 }
-                else if (32 < i)
+                else if (21 < i && i < 33)
                 {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invaders1"), Vector2.Zero, 10));
+                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
+                    invaders[i].x = (i - 22) * invaders[i].width;
+                    invaders[i].y = invaders[i].height * 3;
+                }
+                else if (32 < i && i < 44)
+                {
+                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
+                    invaders[i].x = (i - 33) * invaders[i].width;
+                    invaders[i].y = invaders[i].height * 4;
+                }
+                else if (43 < i)
+                {
+                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
+                    invaders[i].x = (i - 44) * invaders[i].width;
+                    invaders[i].y = invaders[i].height * 5;
                 }
             }
         }
@@ -106,6 +124,12 @@ namespace Space_Invaders
 
             spriteBatch.Begin();
             player.Draw(spriteBatch);
+
+            foreach (Enemy invader in invaders)
+            {
+                invader.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -38,7 +38,18 @@ namespace Space_Invaders
                 direction.Y = 0;
             }
             base.Update(gameTime);
-            return false;
+            if (moveRight == true && x > main.width - width) 
+            {
+                return true;
+            }
+            else if (moveRight == false && x < 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
