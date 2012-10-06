@@ -12,15 +12,18 @@ namespace Space_Invaders
         public static bool moveRight = true;
         public static bool hitWall = false;
 
+        public int animation = 0;
 
+        public byte Number = 0;
 
         int points;
-        public Enemy(Texture2D _texture, Vector2 _position, int _points)
+        public Enemy(Texture2D _texture, Vector2 _position, int _points, byte _Number)
             : base(_texture, _position)
         {
             points = _points;
+            Number = _Number;
         }
-        public bool EnemyUpdate(GameTime gameTime)
+        public bool EnemyUpdate(GameTime gameTime, EnemyPosition position)
         {
             if (hitWall == true)
             {
@@ -50,6 +53,16 @@ namespace Space_Invaders
             {
                 return false;
             }
+        }
+
+        public Rectangle EnemyBox()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, texture.Width / 2, texture.Height);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, position, EnemyBox(), Color.White);
         }
     }
 }

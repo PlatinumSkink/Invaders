@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyPosition.cs" />
     <Compile Include="Laser.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Spaceship.cs" />

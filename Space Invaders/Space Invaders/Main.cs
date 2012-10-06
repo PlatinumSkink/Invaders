@@ -19,6 +19,7 @@ namespace Space_Invaders
         Player player;
 
         List<Enemy> invaders = new List<Enemy>();
+        List<EnemyPosition> invaderPosition = new List<EnemyPosition>();
 
         public int width;
         public int height;
@@ -51,6 +52,15 @@ namespace Space_Invaders
 
             player = new Player(Content.Load<Texture2D>("Graphics/Player"), new Vector2(width / 2, height - 40));
 
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    invaderPosition.Add(new EnemyPosition());
+                }
+            }
+            EnemyPosition.overallPosition = new Vector2(0, 0);
+
             NewWave();
         }
 
@@ -68,7 +78,7 @@ namespace Space_Invaders
 
             foreach (Enemy invader in invaders)
             {
-                if (invader.EnemyUpdate(gameTime))
+                if (invader.EnemyUpdate(gameTime, invaderPosition[invader.Number]))
                 {
                     shift = true;
                 }
@@ -83,37 +93,57 @@ namespace Space_Invaders
 
         protected void NewWave()
         {
-            for (int i = 0; i < 55; i++)
+            byte current = 0;
+            for (int j = 0; j < 5; j++)
             {
-                if (i < 11)
+                for (int i = 0; i < 11; i++)
                 {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader3"), Vector2.Zero, 40));
-                    invaders[i].x = i * (invaders[i].width + 10);
-                    invaders[i].y = invaders[i].height * 1;
-                }
-                else if (10 < i && i < 22)
-                {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
-                    invaders[i].x = (i - 11) * invaders[i].width;
-                    invaders[i].y = invaders[i].height * 2;
-                }
-                else if (21 < i && i < 33)
-                {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
-                    invaders[i].x = (i - 22) * invaders[i].width;
-                    invaders[i].y = invaders[i].height * 3;
-                }
-                else if (32 < i && i < 44)
-                {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
-                    invaders[i].x = (i - 33) * invaders[i].width;
-                    invaders[i].y = invaders[i].height * 4;
-                }
-                else if (43 < i)
-                {
-                    invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
-                    invaders[i].x = (i - 44) * invaders[i].width;
-                    invaders[i].y = invaders[i].height * 5;
+                
+                    invaders.Add(new Enemy(null, Vector2.Zero, 0, current));
+                    current++;
+
+                    if (j == 0) 
+                    {
+
+                    }
+                    else if (j == 1 || j == 2)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    /*if (i < 11)
+                    {
+                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader3"), Vector2.Zero, 40));
+                        invaders[i].x = i * (invaders[i].width + 10);
+                        invaders[i].y = invaders[i].height * 1;
+                    }
+                    else if (10 < i && i < 22)
+                    {
+                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
+                        invaders[i].x = (i - 11) * invaders[i].width;
+                        invaders[i].y = invaders[i].height * 2;
+                    }
+                    else if (21 < i && i < 33)
+                    {
+                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
+                        invaders[i].x = (i - 22) * invaders[i].width;
+                        invaders[i].y = invaders[i].height * 3;
+                    }
+                    else if (32 < i && i < 44)
+                    {
+                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
+                        invaders[i].x = (i - 33) * invaders[i].width;
+                        invaders[i].y = invaders[i].height * 4;
+                    }
+                    else if (43 < i)
+                    {
+                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
+                        invaders[i].x = (i - 44) * invaders[i].width;
+                        invaders[i].y = invaders[i].height * 5;
+                    }*/
                 }
             }
         }
