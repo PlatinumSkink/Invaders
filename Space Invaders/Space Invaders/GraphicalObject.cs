@@ -51,6 +51,17 @@ namespace Space_Invaders
                 return texture.Height * sizeMultiplier;
             }
         }
+        public Texture2D graphic
+        {
+            get
+            {
+                return texture;
+            }
+            set
+            {
+                texture = value;
+            }
+        }
 
         public GraphicalObject(Texture2D _texture, Vector2 _position)
         {

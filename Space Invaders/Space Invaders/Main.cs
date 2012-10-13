@@ -98,22 +98,23 @@ namespace Space_Invaders
             {
                 for (int i = 0; i < 11; i++)
                 {
-                
                     invaders.Add(new Enemy(null, Vector2.Zero, 0, current));
-                    current++;
+                    invaders[current].x = i * 50;
+                    invaders[current].y = j * 50;
 
                     if (j == 0) 
                     {
-
+                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader3");
                     }
                     else if (j == 1 || j == 2)
                     {
-
+                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader2");
                     }
                     else
                     {
-
+                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader1");
                     }
+                    current++;
                     /*if (i < 11)
                     {
                         invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader3"), Vector2.Zero, 40));

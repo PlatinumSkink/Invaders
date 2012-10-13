@@ -55,14 +55,18 @@ namespace Space_Invaders
             }
         }
 
-        public Rectangle EnemyBox()
+        public Rectangle EnemyBox1()
         {
             return new Rectangle((int)position.X, (int)position.Y, texture.Width / 2, texture.Height);
+        }
+        public Rectangle EnemyBox2()
+        {
+            return new Rectangle((int)position.X + texture.Width / 2, (int)position.Y, texture.Width / 2, texture.Height);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, EnemyBox(), Color.White);
+            spriteBatch.Draw(texture, EnemyBox1(), EnemyBox1(), Color.White);
         }
     }
 }
