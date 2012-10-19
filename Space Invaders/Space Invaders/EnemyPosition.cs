@@ -51,6 +51,7 @@ namespace Space_Invaders
                 Timer = 0;
                 TimeUntilChange = (int)(TimeUntilChange * 0.99);
                 position += move;
+                
                 return true;
             }
             return false;
