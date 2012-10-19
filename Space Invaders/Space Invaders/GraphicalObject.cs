@@ -11,7 +11,7 @@ namespace Space_Invaders
     {
         protected Texture2D texture;
         protected Vector2 position;
-        static byte sizeMultiplier = 1;
+        public static byte sizeMultiplier = 1;
 
         public static Main main;
 
@@ -69,7 +69,7 @@ namespace Space_Invaders
             position = _position;
         }
 
-        protected Rectangle Box()
+        public virtual Rectangle Box()
         {
             return new Rectangle((int)x, (int)y, width, height);
         }

@@ -10,6 +10,19 @@ namespace Space_Invaders
 {
     class Player : Spaceship
     {
+        bool pressedSpace = false;
+        bool fired = false;
+        public bool Space
+        {
+            get { return pressedSpace; }
+            set { pressedSpace = value; }
+        }
+        public bool Fired
+        {
+            get { return fired; }
+            set { fired = value; }
+        }
+
         public Player(Texture2D _texture, Vector2 _position) : 
             base(_texture, _position) 
         {
@@ -42,6 +55,14 @@ namespace Space_Invaders
             else
             {
                 direction.X = 0;
+            }
+            if (ks.IsKeyDown(Keys.Space))
+            {
+                Space = true;
+            }
+            else
+            {
+                Space = false;
             }
         }
     }

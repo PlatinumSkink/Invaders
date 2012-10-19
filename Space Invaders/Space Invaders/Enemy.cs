@@ -16,6 +16,11 @@ namespace Space_Invaders
 
         public byte Number = 0;
 
+        public int frameWidth
+        {
+            get { return width / 2; }
+        }
+
         int points;
         public Enemy(Texture2D _texture, Vector2 _position, int _points, byte _Number)
             : base(_texture, _position)
@@ -23,9 +28,20 @@ namespace Space_Invaders
             points = _points;
             Number = _Number;
         }
-        public bool EnemyUpdate(GameTime gameTime, EnemyPosition position)
+        public bool EnemyUpdate(GameTime gameTime, EnemyPosition invaderPosition)
         {
-            if (hitWall == true)
+            x = invaderPosition.x - frameWidth / 2;
+            y = invaderPosition.y;
+            if (x > main.width - width && moveRight == true) {
+                return true;
+            } 
+            else if (x < width / 2 && moveRight == false) 
+            {
+                return true;
+            }
+            
+            return false;
+            /*if (hitWall == true)
             {
                 direction.X = 0;
                 direction.Y = 1;
@@ -52,21 +68,22 @@ namespace Space_Invaders
             else
             {
                 return false;
-            }
+            }*/
         }
 
-        public Rectangle EnemyBox1()
+        public override Rectangle Box()
         {
-            return new Rectangle((int)position.X, (int)position.Y, texture.Width / 2, texture.Height);
+            return new Rectangle((int)x, (int)y, width / 2, height);
         }
-        public Rectangle EnemyBox2()
+
+        public Rectangle EnemyBox()
         {
-            return new Rectangle((int)position.X + texture.Width / 2, (int)position.Y, texture.Width / 2, texture.Height);
+            return new Rectangle((int)animation * frameWidth, (int)0, frameWidth, height);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, EnemyBox1(), EnemyBox1(), Color.White);
+            spriteBatch.Draw(texture, Box(), EnemyBox(), Color.White);
         }
     }
 }

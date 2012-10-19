@@ -11,17 +11,49 @@ namespace Space_Invaders
         public static bool moveRight = true;
         public static bool hitWall = false;
 
-        public static Vector2 move = new Vector2(2, 0);
+        public static Vector2 move = new Vector2(16, 0);
+        public int Timer = 0;
+        public int TimeUntilChange = 1000;
         public static Vector2 overallPosition;
-        public Vector2 position;
+        Vector2 position = Vector2.Zero;
+
+        public float x
+        {
+            get
+            {
+                return position.X;
+            }
+            set
+            {
+                position.X = value;
+            }
+        }
+        public float y
+        {
+            get
+            {
+                return position.Y;
+            }
+            set
+            {
+                position.Y = value;
+            }
+        }
 
         public EnemyPosition()
         {
 
         }
-        public void Update(byte x, byte y)
+        public bool Update(GameTime gameTime)
         {
-
+            Timer += gameTime.ElapsedGameTime.Milliseconds;
+            if (Timer > TimeUntilChange) {
+                Timer = 0;
+                TimeUntilChange = (int)(TimeUntilChange * 0.99);
+                position += move;
+                return true;
+            }
+            return false;
         }
     }
 }

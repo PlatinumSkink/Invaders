@@ -16,21 +16,25 @@ namespace Space_Invaders
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Player player;
+        GameManager gameManager;
 
-        List<Enemy> invaders = new List<Enemy>();
-        List<EnemyPosition> invaderPosition = new List<EnemyPosition>();
+        enum GameState
+        {
+            Menu,
+            Game,
+            End
+        }
+
+        GameState gameState = GameState.Game;
 
         public int width;
         public int height;
 
-        public bool shift = false;
-
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 600;
+            graphics.PreferredBackBufferHeight = 400;
             Content.RootDirectory = "Content";
         }
 
@@ -50,18 +54,7 @@ namespace Space_Invaders
 
             GraphicalObject.main = this;
 
-            player = new Player(Content.Load<Texture2D>("Graphics/Player"), new Vector2(width / 2, height - 40));
-
-            for (int i = 0; i < 11; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    invaderPosition.Add(new EnemyPosition());
-                }
-            }
-            EnemyPosition.overallPosition = new Vector2(0, 0);
-
-            NewWave();
+            gameManager = new GameManager(width, height, Content);
         }
 
         protected override void UnloadContent()
@@ -73,80 +66,23 @@ namespace Space_Invaders
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            player.Update(gameTime);
-
-            foreach (Enemy invader in invaders)
+            switch (gameState)
             {
-                if (invader.EnemyUpdate(gameTime, invaderPosition[invader.Number]))
-                {
-                    shift = true;
-                }
+                case GameState.Game:
+                    {
+                        gameManager.Update(gameTime);
+                        break;
+                    }
+                case GameState.Menu:
+                    {
+                        break;
+                    }
+                case GameState.End:
+                    {
+                        break;
+                    }
             }
-            if (shift == true)
-            {
-                Enemy.hitWall = true;
-            }
-
             base.Update(gameTime);
-        }
-
-        protected void NewWave()
-        {
-            byte current = 0;
-            for (int j = 0; j < 5; j++)
-            {
-                for (int i = 0; i < 11; i++)
-                {
-                    invaders.Add(new Enemy(null, Vector2.Zero, 0, current));
-                    invaders[current].x = i * 50;
-                    invaders[current].y = j * 50;
-
-                    if (j == 0) 
-                    {
-                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader3");
-                    }
-                    else if (j == 1 || j == 2)
-                    {
-                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader2");
-                    }
-                    else
-                    {
-                        invaders[current].graphic = Content.Load<Texture2D>("Graphics/Invader1");
-                    }
-                    current++;
-                    /*if (i < 11)
-                    {
-                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader3"), Vector2.Zero, 40));
-                        invaders[i].x = i * (invaders[i].width + 10);
-                        invaders[i].y = invaders[i].height * 1;
-                    }
-                    else if (10 < i && i < 22)
-                    {
-                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
-                        invaders[i].x = (i - 11) * invaders[i].width;
-                        invaders[i].y = invaders[i].height * 2;
-                    }
-                    else if (21 < i && i < 33)
-                    {
-                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader2"), Vector2.Zero, 20));
-                        invaders[i].x = (i - 22) * invaders[i].width;
-                        invaders[i].y = invaders[i].height * 3;
-                    }
-                    else if (32 < i && i < 44)
-                    {
-                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
-                        invaders[i].x = (i - 33) * invaders[i].width;
-                        invaders[i].y = invaders[i].height * 4;
-                    }
-                    else if (43 < i)
-                    {
-                        invaders.Add(new Enemy(Content.Load<Texture2D>("Graphics/Invader1"), Vector2.Zero, 10));
-                        invaders[i].x = (i - 44) * invaders[i].width;
-                        invaders[i].y = invaders[i].height * 5;
-                    }*/
-                }
-            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -154,12 +90,8 @@ namespace Space_Invaders
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            player.Draw(spriteBatch);
 
-            foreach (Enemy invader in invaders)
-            {
-                invader.Draw(spriteBatch);
-            }
+            gameManager.Draw(spriteBatch);
 
             spriteBatch.End();
 
