@@ -13,6 +13,12 @@ namespace Space_Invaders
         SpriteFont font;
         Color color;
 
+        public string GetText
+        {
+            get { return text; }
+            set { text = value; }
+        }
+
         public TextLine(string _text, SpriteFont _font, Color _color, Vector2 _position) : base(null, _position)
         {
             text = _text;

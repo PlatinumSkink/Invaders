@@ -12,6 +12,26 @@ namespace Space_Invaders
     {
         bool pressedSpace = false;
         bool fired = false;
+
+        bool hit = false;
+        int hitTimer = 0;
+        int timeHit = 1000;
+
+        static Texture2D deathTexture;
+        static Texture2D lifeTexture;
+
+        public static Texture2D SetDeath
+        {
+            get { return deathTexture; }
+            set { deathTexture = value; }
+        }
+
+        public bool GetHit
+        {
+            get { return hit; }
+            set { hit = value; }
+        }
+
         public bool Space
         {
             get { return pressedSpace; }
@@ -26,20 +46,35 @@ namespace Space_Invaders
         public Player(Texture2D _texture, Vector2 _position) : 
             base(_texture, _position) 
         {
+            lifeTexture = _texture;
             movement.X = 4;
         }
         public override void Update(GameTime gameTime)
         {
             KeyboardState keyboard = Keyboard.GetState();
-            KeyInput(keyboard);
-            base.Update(gameTime);
-            if (x < 0) 
+            if (hit == false)
             {
-                x = 0;
+                texture = lifeTexture;
+                KeyInput(keyboard);
+                base.Update(gameTime);
+                if (x < 0)
+                {
+                    x = 0;
+                }
+                else if (x > main.width - width)
+                {
+                    x = main.width - width;
+                }
             }
-            else if (x > main.width - width) 
+            else
             {
-                x = main.width - width;
+                texture = deathTexture;
+                hitTimer += gameTime.ElapsedGameTime.Milliseconds;
+                if (hitTimer > timeHit) 
+                {
+                    hitTimer = 0;
+                    hit = false;
+                }
             }
         }
         protected void KeyInput(KeyboardState ks)

@@ -26,7 +26,7 @@ namespace Space_Invaders
             End
         }
 
-        GameState gameState = GameState.Menu;
+        GameState gameState = GameState.Game;
 
         public int width;
         public int height;

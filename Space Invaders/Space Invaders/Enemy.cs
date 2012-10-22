@@ -22,12 +22,20 @@ namespace Space_Invaders
         }
 
         int points;
+
+        public int GetPoints
+        {
+            get { return points; }
+            set { points = value; }
+        }
+
         public Enemy(Texture2D _texture, Vector2 _position, int _points, byte _Number)
             : base(_texture, _position)
         {
             points = _points;
             Number = _Number;
         }
+
         public bool EnemyUpdate(GameTime gameTime, EnemyPosition invaderPosition)
         {
             x = invaderPosition.x - frameWidth / 2;
