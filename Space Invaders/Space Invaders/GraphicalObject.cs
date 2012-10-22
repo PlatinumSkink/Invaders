@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Space_Invaders
 {
-    abstract class GraphicalObject
+    class GraphicalObject
     {
         protected Texture2D texture;
         protected Vector2 position;

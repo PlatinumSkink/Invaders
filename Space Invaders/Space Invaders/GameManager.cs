@@ -20,11 +20,19 @@ namespace Space_Invaders
 
         List<Enemy> invaders = new List<Enemy>();
         List<EnemyPosition> invaderPosition = new List<EnemyPosition>();
+        List<GraphicalObject> lifeMarkers = new List<GraphicalObject>();
 
         List<Laser> lasers = new List<Laser>();
+        List<Block> blocks = new List<Block>();
 
         int width;
         int height;
+
+        Random rand = new Random();
+        int shootNext = 0;
+        int shootTimer = 0;
+
+        int lives = 2;
 
         public bool shift = false;
 
@@ -45,12 +53,36 @@ namespace Space_Invaders
 
             EnemyPosition.overallPosition = new Vector2(0, 0);
 
+            shootNext = rand.Next(800, 2000);
+            lifeMarkers.Add(new GraphicalObject(content.Load<Texture2D>("Graphics/Player"), new Vector2(width, 0)));
+            lifeMarkers.Add(new GraphicalObject(content.Load<Texture2D>("Graphics/Player"), new Vector2(width, 0)));
+
+            int blockPoint = width / 5;
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i, height - 300), SpriteEffects.None));
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i - blocks[0].height, height - 300), SpriteEffects.None));
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i + blocks[0].height, height - 300), SpriteEffects.None));
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i, height - 300 - blocks[0].height), SpriteEffects.None));
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i - blocks[0].height, height - 300 + blocks[0].height), SpriteEffects.None));
+                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint * i + blocks[0].height, height - 300 + blocks[0].height), SpriteEffects.None));
+            }
+
             NewWave(content);
         }
 
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
+            shootTimer += gameTime.ElapsedGameTime.Milliseconds;
+            if (shootTimer >= shootNext) 
+            {
+                shootTimer = 0;
+                shootNext = rand.Next(800, 2000);
+                int enemy = rand.Next(0, invaders.Count);
+                lasers.Add(new Laser(content.Load<Texture2D>("Graphics/Laser"), new Vector2(invaders[enemy].x + invaders[enemy].width / 2 - 1, invaders[enemy].y + 10), false));
+            }
             if (player.Space == true && player.Fired == false) 
             {
                 player.Fired = true;
@@ -59,6 +91,10 @@ namespace Space_Invaders
             foreach (var shot in lasers)
             {
                 shot.Update(gameTime);
+            }
+            for (int i = 0; i < lifeMarkers.Count; i++)
+            {
+                lifeMarkers[i].x = width - lifeMarkers[i].width * (1 + i);
             }
             foreach (Enemy invader in invaders)
             {
@@ -110,7 +146,7 @@ namespace Space_Invaders
                 bool removed = false;
                 for (int j = 0; j < invaders.Count; j++)
                 {
-                    if (lasers[i].Box().Intersects(invaders[j].Box())) 
+                    if (lasers[i].Box().Intersects(invaders[j].Box()) && lasers[i].GetFriendly == true) 
                     {
                         lasers.Remove(lasers[i]);
                         i--;
@@ -123,11 +159,14 @@ namespace Space_Invaders
                 }
                 if (removed == false)
                 {
-                    if (lasers[i].y < 0 - lasers[i].height)
+                    if (lasers[i].y < 0 - lasers[i].height || lasers[i].y > height)
                     {
+                        if (lasers[i].GetFriendly == true)
+                        {
+                            player.Fired = false;
+                        }
                         lasers.Remove(lasers[i]);
                         i--;
-                        player.Fired = false;
                     }
                 }
             }
@@ -146,6 +185,8 @@ namespace Space_Invaders
         protected void NewWave(ContentManager content)
         {
             byte current = 0;
+            lives++;
+            lifeMarkers.Add(new GraphicalObject(content.Load<Texture2D>("Graphics/Player"), new Vector2(width, 0)));
 
             for (int i = 0; i < 11; i++)
             {
@@ -200,6 +241,15 @@ namespace Space_Invaders
             foreach (Enemy invader in invaders)
             {
                 invader.Draw(sprite);
+            }
+
+            foreach (var marker in lifeMarkers)
+            {
+                marker.Draw(sprite);
+            }
+            foreach (var block in blocks)
+            {
+                block.Draw(sprite);
             }
         }
     }

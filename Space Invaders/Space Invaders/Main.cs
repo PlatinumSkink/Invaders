@@ -17,6 +17,7 @@ namespace Space_Invaders
         SpriteBatch spriteBatch;
 
         GameManager gameManager;
+        MenuManager menuManager;
 
         enum GameState
         {
@@ -25,7 +26,7 @@ namespace Space_Invaders
             End
         }
 
-        GameState gameState = GameState.Game;
+        GameState gameState = GameState.Menu;
 
         public int width;
         public int height;
@@ -55,6 +56,7 @@ namespace Space_Invaders
             GraphicalObject.main = this;
 
             gameManager = new GameManager(width, height, Content);
+            menuManager = new MenuManager(width, height, Content);
         }
 
         protected override void UnloadContent()
@@ -75,6 +77,7 @@ namespace Space_Invaders
                     }
                 case GameState.Menu:
                     {
+                        menuManager.Update(gameTime);
                         break;
                     }
                 case GameState.End:
@@ -91,7 +94,23 @@ namespace Space_Invaders
 
             spriteBatch.Begin();
 
-            gameManager.Draw(spriteBatch);
+            switch (gameState)
+            {
+                case GameState.Game:
+                    {
+                        gameManager.Draw(spriteBatch);
+                        break;
+                    }
+                case GameState.Menu:
+                    {
+                        menuManager.Draw(spriteBatch);
+                        break;
+                    }
+                case GameState.End:
+                    {
+                        break;
+                    }
+            }
 
             spriteBatch.End();
 
