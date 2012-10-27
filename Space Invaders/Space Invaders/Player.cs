@@ -55,7 +55,7 @@ namespace Space_Invaders
             if (hit == false)
             {
                 texture = lifeTexture;
-                KeyInput(keyboard);
+                KeyInput();
                 base.Update(gameTime);
                 if (x < 0)
                 {
@@ -77,13 +77,13 @@ namespace Space_Invaders
                 }
             }
         }
-        protected void KeyInput(KeyboardState ks)
+        protected void KeyInput()
         {
-            if (ks.IsKeyDown(Keys.Right)) 
+            if (Main.km.Key(Keys.Right)) 
             {
                 direction.X = 1;
             }
-            else if (ks.IsKeyDown(Keys.Left))
+            else if (Main.km.Key(Keys.Left))
             {
                 direction.X = -1;
             }
@@ -91,7 +91,7 @@ namespace Space_Invaders
             {
                 direction.X = 0;
             }
-            if (ks.IsKeyDown(Keys.Space))
+            if (Main.km.Key(Keys.Space))
             {
                 Space = true;
             }

@@ -28,8 +28,6 @@ namespace Space_Invaders
         int width;
         int height;
 
-        int points = 0;
-
         Random rand = new Random();
         int shootNext = 0;
         int shootTimer = 0;
@@ -51,15 +49,44 @@ namespace Space_Invaders
         private void LoadContent(ContentManager content)
         {
             this.content = content;
-            player = new Player(content.Load<Texture2D>("Graphics/Player"), new Vector2(width / 2, height - 40));
             Laser.playerLaser = content.Load<Texture2D>("Graphics/PlayerLaser");
             Laser.enemyLaser1 = content.Load<Texture2D>("Graphics/Laser");
 
             Player.SetDeath = content.Load<Texture2D>("Graphics/PlayerDestroyed");
+        }
+
+        public void Reset()
+        {
+            Main.currentScore = 0;
+            /*for (int i = 0; i < invaders.Count; i++)
+            {
+                invaders.Remove(invaders[i]);
+                i--;
+            }*/
+
+            invaders = new List<Enemy>();
+
+            /*for (int i = 0; i < invaderPosition.Count; i++)
+            {
+                invaderPosition.Remove(invaderPosition[i]);
+                i--;
+            }*/
+
+            invaderPosition = new List<EnemyPosition>();
+            /*for () 
+            {
+
+            }*/
+
+            blocks = new List<Block>();
+
+            lifeMarkers = new List<GraphicalObject>();
+            
+            player = new Player(content.Load<Texture2D>("Graphics/Player"), new Vector2(width / 2, height - 40));
 
             EnemyPosition.overallPosition = new Vector2(0, 0);
 
-            pointText = new TextLine(points.ToString(), content.Load<SpriteFont>("Graphics/SpriteFont1"), Color.White, new Vector2(10, 10));
+            pointText = new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), Main.currentScore.ToString(), Color.White, new Vector2(10, 10));
 
             shootNext = rand.Next(800, 2000);
             lifeMarkers.Add(new GraphicalObject(content.Load<Texture2D>("Graphics/Player"), new Vector2(width, 0)));
@@ -89,7 +116,7 @@ namespace Space_Invaders
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-            pointText.GetText = points.ToString();
+            pointText.GetText = Main.currentScore.ToString();
             shootTimer += gameTime.ElapsedGameTime.Milliseconds;
             if (shootTimer >= shootNext) 
             {
@@ -98,7 +125,7 @@ namespace Space_Invaders
                 int enemy = rand.Next(0, invaders.Count);
                 lasers.Add(new Laser(content.Load<Texture2D>("Graphics/Laser"), new Vector2(invaders[enemy].x + invaders[enemy].width / 2 - 1, invaders[enemy].y + 10), false));
             }
-            if (player.Space == true && player.Fired == false) 
+            if (player.Space == true && player.Fired == false && player.GetHit == false) 
             {
                 player.Fired = true;
                 lasers.Add(new Laser(null, new Vector2(player.x + player.width / 2 - 1, player.y - 10), true));
@@ -167,7 +194,8 @@ namespace Space_Invaders
                         i--;
                         removed = true;
                         player.Fired = false;
-                        points += invaders[j].GetPoints;
+                        Main.km.PressedSpace = false;
+                        Main.currentScore += invaders[j].GetPoints;
                         invaders.Remove(invaders[j]);
                         j--;
                         break;
@@ -191,6 +219,7 @@ namespace Space_Invaders
                             if (lasers[i].GetFriendly == true)
                             {
                                 player.Fired = false;
+                                Main.km.PressedSpace = false;
                                 removed = true;
                             }
                             lasers.Remove(lasers[i]);
@@ -213,6 +242,7 @@ namespace Space_Invaders
                         if (lasers[i].GetFriendly == true)
                         {
                             player.Fired = false;
+                            Main.km.PressedSpace = false;
                         }
                         lasers.Remove(lasers[i]);
                         i--;
@@ -229,6 +259,22 @@ namespace Space_Invaders
                 }
                 NewWave(content);
             }
+        }
+
+        public bool CheckEnd ()
+        {
+            foreach (var invader in invaders)
+	        {
+                if (invader.y > player.y)
+                {
+                    return true;
+                }
+	        }
+            if (lifeMarkers.Count == 0 && player.GetHit == false)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected void NewWave(ContentManager content)

@@ -16,8 +16,19 @@ namespace Space_Invaders
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        HighScoreClass highScore;
+
+        public static KeyBoardManager km = new KeyBoardManager();
+
         GameManager gameManager;
         MenuManager menuManager;
+        ScoreManager scoreManager;
+
+        //SpriteBatch spriteBatch;
+        SpriteFont font;
+        string typedText = "";
+
+        public static int currentScore = 0;
 
         enum GameState
         {
@@ -26,7 +37,16 @@ namespace Space_Invaders
             End
         }
 
-        GameState gameState = GameState.Game;
+        public enum MenuButtons
+        {
+            Nothing,
+            PlayGame,
+            CheckScore,
+            EndGame
+        }
+
+
+        GameState gameState = GameState.Menu;
 
         public int width;
         public int height;
@@ -37,12 +57,13 @@ namespace Space_Invaders
             graphics.PreferredBackBufferWidth = 600;
             graphics.PreferredBackBufferHeight = 400;
             Content.RootDirectory = "Content";
+            this.Window.Title = "Space Invaders - Niklas Cullberg";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -55,8 +76,16 @@ namespace Space_Invaders
 
             GraphicalObject.main = this;
 
+            highScore = new HighScoreClass(Content);
+
+            highScore.LoadScores();
+            highScore.SetScores();
+
             gameManager = new GameManager(width, height, Content);
             menuManager = new MenuManager(width, height, Content);
+            scoreManager = new ScoreManager(highScore, Content);
+
+            //highScore.NewScore(100000, "Someone");
         }
 
         protected override void UnloadContent()
@@ -68,20 +97,67 @@ namespace Space_Invaders
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            km.Update();
             switch (gameState)
             {
                 case GameState.Game:
                     {
                         gameManager.Update(gameTime);
+
+                        if (gameManager.CheckEnd())
+                        {
+                            gameState = GameState.End;
+                        }
                         break;
                     }
                 case GameState.Menu:
                     {
+                        MenuButtons menuButtons = MenuButtons.Nothing;
+
+                        //(int buttonPressed = menuManager.KeyCheck(this);
+
+                        menuButtons = menuManager.KeyCheck();
+
                         menuManager.Update(gameTime);
+
+                        switch (menuButtons)
+                        {
+                            case MenuButtons.Nothing:
+                                break;
+
+                            case MenuButtons.CheckScore:
+                                gameState = GameState.End;
+                                break;
+
+                            case MenuButtons.PlayGame:
+                                scoreManager.inputName = true;
+                                gameState = GameState.Game;
+                                gameManager.Reset();
+                                break;
+
+                            case MenuButtons.EndGame:
+                                this.Exit();
+                                break;
+                        }
                         break;
                     }
                 case GameState.End:
                     {
+                        scoreManager.Update(gameTime);
+
+                        MenuButtons scoreButtons = MenuButtons.Nothing;
+
+                        scoreButtons = scoreManager.KeyCheck();
+
+                        switch (scoreButtons)
+                        {
+                            case MenuButtons.Nothing:
+                                break;
+                            case MenuButtons.CheckScore:
+                                gameState = GameState.Menu;
+                                break;
+                        }
+                        
                         break;
                     }
             }
@@ -108,6 +184,7 @@ namespace Space_Invaders
                     }
                 case GameState.End:
                     {
+                        scoreManager.Draw(spriteBatch);
                         break;
                     }
             }

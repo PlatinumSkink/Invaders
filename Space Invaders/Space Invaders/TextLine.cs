@@ -19,7 +19,8 @@ namespace Space_Invaders
             set { text = value; }
         }
 
-        public TextLine(string _text, SpriteFont _font, Color _color, Vector2 _position) : base(null, _position)
+        public TextLine(SpriteFont _font, string _text, Color _color, Vector2 _position)
+            : base(null, _position)
         {
             text = _text;
             font = _font;

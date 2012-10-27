@@ -93,6 +93,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -111,6 +112,9 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyPosition.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="HighScoreClass.cs" />
+    <Compile Include="KeyBoardManager.cs" />
+    <Compile Include="KeyGrabber.cs" />
     <Compile Include="Laser.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Player.cs" />

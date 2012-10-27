@@ -49,7 +49,7 @@ namespace Space_Invaders
             Timer += gameTime.ElapsedGameTime.Milliseconds;
             if (Timer > TimeUntilChange) {
                 Timer = 0;
-                TimeUntilChange = (int)(TimeUntilChange * 0.99);
+                //TimeUntilChange = (int)(TimeUntilChange * 0.99);
                 position += move;
                 
                 return true;
