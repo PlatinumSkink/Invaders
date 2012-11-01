@@ -57,13 +57,13 @@ namespace Space_Invaders
                 texture = lifeTexture;
                 KeyInput();
                 base.Update(gameTime);
-                if (x < 0)
+                if (X < 0)
                 {
-                    x = 0;
+                    X = 0;
                 }
-                else if (x > main.width - width)
+                else if (X > main.width - width)
                 {
-                    x = main.width - width;
+                    X = main.width - width;
                 }
             }
             else

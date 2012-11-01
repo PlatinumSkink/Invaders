@@ -45,7 +45,7 @@ namespace Space_Invaders
 
         public void Update(GameTime gameTime) 
         {
-            y += speed;
+            Y += speed;
             if (friendly == false)
             {
                 animation++;
@@ -64,7 +64,7 @@ namespace Space_Invaders
             }
             else
             {
-                return new Rectangle((int)x, (int)y, width / 10, height);
+                return new Rectangle((int)X, (int)Y, width / 10, height);
             }
         }
 

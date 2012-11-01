@@ -38,12 +38,12 @@ namespace Space_Invaders
 
         public bool EnemyUpdate(GameTime gameTime, EnemyPosition invaderPosition)
         {
-            x = invaderPosition.x - frameWidth / 2;
-            y = invaderPosition.y;
-            if (x > main.width - width && moveRight == true) {
+            X = invaderPosition.x - frameWidth / 2;
+            Y = invaderPosition.y;
+            if (X > main.width - width && moveRight == true) {
                 return true;
             } 
-            else if (x < width / 2 && moveRight == false) 
+            else if (X < width / 2 && moveRight == false) 
             {
                 return true;
             }
@@ -81,7 +81,7 @@ namespace Space_Invaders
 
         public override Rectangle Box()
         {
-            return new Rectangle((int)x, (int)y, width / 2, height);
+            return new Rectangle((int)X, (int)Y, width / 2, height);
         }
 
         public Rectangle EnemyBox()

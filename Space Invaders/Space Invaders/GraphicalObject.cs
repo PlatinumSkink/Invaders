@@ -15,7 +15,7 @@ namespace Space_Invaders
 
         public static Main main;
 
-        public float x
+        public float X
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Space_Invaders
                 position.X = value;
             }
         }
-        public float y
+        public float Y
         {
             get
             {
@@ -71,7 +71,7 @@ namespace Space_Invaders
 
         public virtual Rectangle Box()
         {
-            return new Rectangle((int)x, (int)y, width, height);
+            return new Rectangle((int)X, (int)Y, width, height);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

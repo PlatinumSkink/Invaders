@@ -29,7 +29,7 @@ namespace Space_Invaders
         }
         public override Rectangle Box()
         {
-            return new Rectangle((int)x, (int)y, width / 4, height);
+            return new Rectangle((int)X, (int)Y, width / 4, height);
         }
 
         public Rectangle EnemyBox()

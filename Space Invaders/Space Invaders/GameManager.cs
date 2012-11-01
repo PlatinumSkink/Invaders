@@ -25,6 +25,8 @@ namespace Space_Invaders
         List<Laser> lasers = new List<Laser>();
         List<Block> blocks = new List<Block>();
 
+        Enemy UFO;
+
         int width;
         int height;
 
@@ -53,6 +55,8 @@ namespace Space_Invaders
             Laser.enemyLaser1 = content.Load<Texture2D>("Graphics/Laser");
 
             Player.SetDeath = content.Load<Texture2D>("Graphics/PlayerDestroyed");
+
+            UFO = new Enemy(content.Load<Texture2D>("Graphics/UFO"), new Vector2(-50, 50), 150, 0);
         }
 
         public void Reset()
@@ -110,6 +114,8 @@ namespace Space_Invaders
                 blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenceOuterCornerLeft"), new Vector2(blockPoint + blockPoint * i + blocks[0].height + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.FlipHorizontally));
             }
 
+            UFO.X = -50;
+
             NewWave(content);
         }
 
@@ -123,12 +129,12 @@ namespace Space_Invaders
                 shootTimer = 0;
                 shootNext = rand.Next(800, 2000);
                 int enemy = rand.Next(0, invaders.Count);
-                lasers.Add(new Laser(content.Load<Texture2D>("Graphics/Laser"), new Vector2(invaders[enemy].x + invaders[enemy].width / 2 - 1, invaders[enemy].y + 10), false));
+                lasers.Add(new Laser(content.Load<Texture2D>("Graphics/Laser"), new Vector2(invaders[enemy].X + invaders[enemy].width / 2 - 1, invaders[enemy].Y + 10), false));
             }
             if (player.Space == true && player.Fired == false && player.GetHit == false) 
             {
                 player.Fired = true;
-                lasers.Add(new Laser(null, new Vector2(player.x + player.width / 2 - 1, player.y - 10), true));
+                lasers.Add(new Laser(null, new Vector2(player.X + player.width / 2 - 1, player.Y - 10), true));
             }
             foreach (var shot in lasers)
             {
@@ -136,7 +142,7 @@ namespace Space_Invaders
             }
             for (int i = 0; i < lifeMarkers.Count; i++)
             {
-                lifeMarkers[i].x = width - lifeMarkers[i].width * (1 + i);
+                lifeMarkers[i].X = width - lifeMarkers[i].width * (1 + i);
             }
             foreach (Enemy invader in invaders)
             {
@@ -237,7 +243,7 @@ namespace Space_Invaders
                 }
                 if (removed == false)
                 {
-                    if (lasers[i].y < 0 - lasers[i].height || lasers[i].y > height)
+                    if (lasers[i].Y < 0 - lasers[i].height || lasers[i].Y > height)
                     {
                         if (lasers[i].GetFriendly == true)
                         {
@@ -265,7 +271,7 @@ namespace Space_Invaders
         {
             foreach (var invader in invaders)
 	        {
-                if (invader.y > player.y)
+                if (invader.Y > player.Y)
                 {
                     return true;
                 }
@@ -320,8 +326,8 @@ namespace Space_Invaders
                         invaders[current].GetPoints = 10;
                     }
 
-                    invaders[current].x = invaderPosition[current].x - invaders[current].frameWidth / 2;
-                    invaders[current].y = invaderPosition[current].y;
+                    invaders[current].X = invaderPosition[current].x - invaders[current].frameWidth / 2;
+                    invaders[current].Y = invaderPosition[current].y;
 
                     current++;
                 }

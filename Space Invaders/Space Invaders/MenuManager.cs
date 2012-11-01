@@ -51,7 +51,7 @@ namespace Space_Invaders
 
         public void Update(GameTime gameTime)
         {
-            cursor.y = 100 + 50 * cursorNumber;
+            cursor.Y = 100 + 50 * cursorNumber;
             if (Main.km.Key(Keys.Down))
             {
                 cursorNumber++;
