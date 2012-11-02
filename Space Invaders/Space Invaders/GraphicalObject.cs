@@ -4,51 +4,45 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Space_Invaders
 {
-    class GraphicalObject
+    class GraphicalObject : ScreenPosition
     {
         protected Texture2D texture;
-        protected Vector2 position;
         public static byte sizeMultiplier = 1;
 
         public static Main main;
 
-        public float X
-        {
-            get
-            {
-                return position.X;
-            }
-            set
-            {
-                position.X = value;
-            }
-        }
-        public float Y
-        {
-            get
-            {
-                return position.Y;
-            }
-            set
-            {
-                position.Y = value;
-            }
-        }
+        string textureName;
+
         public int width
         {
             get
             {
-                return texture.Width * sizeMultiplier;
+                if (texture != null)
+                {
+                    return texture.Width * sizeMultiplier;
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
         public int height
         {
             get
             {
-                return texture.Height * sizeMultiplier;
+                if (texture != null)
+                {
+                    return texture.Height * sizeMultiplier;
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
         public Texture2D graphic
@@ -63,10 +57,18 @@ namespace Space_Invaders
             }
         }
 
-        public GraphicalObject(Texture2D _texture, Vector2 _position)
+        public GraphicalObject(string _texture, Vector2 _position) : base (_position)
         {
-            texture = _texture;
-            position = _position;
+            textureName = _texture;
+            Load(textureName);
+        }
+
+        public void Load(string route)
+        {
+            if (route != null)
+            {
+                texture = content.Load<Texture2D>("Graphics/" + route);
+            }
         }
 
         public virtual Rectangle Box()
@@ -76,7 +78,10 @@ namespace Space_Invaders
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Box(), Color.White);
+            if (texture != null)
+            {
+                spriteBatch.Draw(texture, Box(), Color.White);
+            }
         }
     }
 }

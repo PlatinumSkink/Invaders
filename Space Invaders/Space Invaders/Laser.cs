@@ -21,7 +21,7 @@ namespace Space_Invaders
 
         public int speed = 8;
 
-        public Laser(Texture2D _texture, Vector2 _position, bool _friendly)
+        public Laser(string _texture, Vector2 _position, bool _friendly)
             : base(_texture, _position)
         {
             GetFriendly = _friendly;

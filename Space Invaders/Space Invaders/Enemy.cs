@@ -29,7 +29,7 @@ namespace Space_Invaders
             set { points = value; }
         }
 
-        public Enemy(Texture2D _texture, Vector2 _position, int _points, byte _Number)
+        public Enemy(string _texture, Vector2 _position, int _points, byte _Number)
             : base(_texture, _position)
         {
             points = _points;
@@ -91,7 +91,10 @@ namespace Space_Invaders
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Box(), EnemyBox(), Color.White);
+            if (texture != null)
+            {
+                spriteBatch.Draw(texture, Box(), EnemyBox(), Color.White);
+            }
         }
     }
 }

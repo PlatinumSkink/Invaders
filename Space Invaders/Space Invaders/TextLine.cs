@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Space_Invaders
 {
-    class TextLine : GraphicalObject
+    class TextLine : ScreenPosition
     {
         string text;
         SpriteFont font;
+        string fontName;
         Color color;
 
         public string GetText
@@ -19,14 +20,21 @@ namespace Space_Invaders
             set { text = value; }
         }
 
-        public TextLine(SpriteFont _font, string _text, Color _color, Vector2 _position)
-            : base(null, _position)
+        public TextLine(string _font, string _text, Color _color, Vector2 _position)
+            : base(_position)
         {
             text = _text;
-            font = _font;
+            fontName = _font;
+            LoadFont(fontName);
+            
             color = _color;
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void LoadFont(string _font)
+        {
+            font = content.Load<SpriteFont>("Graphics/" + _font);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, text, position, color);
         }

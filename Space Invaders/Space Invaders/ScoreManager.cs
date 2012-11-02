@@ -43,20 +43,20 @@ namespace Space_Invaders
             names = new List<TextLine>();
             highScores = _highScores;
 
-            input = new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "Input name: " + name + "|", Color.White, new Vector2(0, 0));
+            input = new TextLine("Font", "Input name: " + name + "|", Color.White, new Vector2(0, 0));
 
-            places.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "1st", Color.White, new Vector2(textSpaceX, textSpaceY * 1)));
-            places.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "2nd", Color.White, new Vector2(textSpaceX, textSpaceY * 2)));
-            places.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "3rd", Color.White, new Vector2(textSpaceX, textSpaceY * 3)));
+            places.Add(new TextLine("Font", "1st", Color.White, new Vector2(textSpaceX, textSpaceY * 1)));
+            places.Add(new TextLine("Font", "2nd", Color.White, new Vector2(textSpaceX, textSpaceY * 2)));
+            places.Add(new TextLine("Font", "3rd", Color.White, new Vector2(textSpaceX, textSpaceY * 3)));
 
             for (int i = 0; i < 10; i++)
             {
                 if (i > 2)
                 {
-                    places.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), (i + 1).ToString() + "th", Color.White, new Vector2(50, textSpaceY + textSpaceY * i)));
+                    places.Add(new TextLine("Font", (i + 1).ToString() + "th", Color.White, new Vector2(50, textSpaceY + textSpaceY * i)));
                 }
-                scores.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "", Color.White, new Vector2(textSpaceX * 3, textSpaceY + textSpaceY * i)));
-                names.Add(new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "", Color.White, new Vector2(textSpaceX * 6, textSpaceY + textSpaceY * i)));
+                scores.Add(new TextLine("Font", "", Color.White, new Vector2(textSpaceX * 3, textSpaceY + textSpaceY * i)));
+                names.Add(new TextLine("Font", "", Color.White, new Vector2(textSpaceX * 6, textSpaceY + textSpaceY * i)));
             }
             GetScore();
         }

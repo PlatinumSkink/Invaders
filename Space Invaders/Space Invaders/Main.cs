@@ -57,6 +57,7 @@ namespace Space_Invaders
             graphics.PreferredBackBufferWidth = 600;
             graphics.PreferredBackBufferHeight = 400;
             Content.RootDirectory = "Content";
+            ScreenPosition.content = Content;
             this.Window.Title = "Space Invaders - Niklas Cullberg";
         }
 

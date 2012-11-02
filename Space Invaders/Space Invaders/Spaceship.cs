@@ -11,7 +11,7 @@ namespace Space_Invaders
     {
         protected Vector2 movement = Vector2.Zero;
         protected Vector2 direction = Vector2.Zero;
-        public Spaceship(Texture2D _texture, Vector2 _position) 
+        public Spaceship(string _texture, Vector2 _position) 
             : base(_texture, _position)
         {
 

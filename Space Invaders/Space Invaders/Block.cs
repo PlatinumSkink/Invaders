@@ -15,12 +15,15 @@ namespace Space_Invaders
 
         SpriteEffects effect;
 
-        public Block(Texture2D _texture, Vector2 _position, SpriteEffects _effect)
+        public Block(string _texture, Vector2 _position, SpriteEffects _effect)
             : base(_texture, _position)
         {
             effect = _effect;
-            frameWidth = _texture.Width / 4;
             origin = new Vector2(texture.Width / 8, texture.Height / 2);
+        }
+        public void GetFrameWidth()
+        {
+            frameWidth = texture.Width / 4;
         }
         public int GetLife
         {

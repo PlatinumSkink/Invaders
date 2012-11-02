@@ -19,6 +19,7 @@ namespace Space_Invaders
         Enemy invader2;
         Enemy invader3;
         GraphicalObject ufo;
+        GraphicalObject title;
 
         int width;
         int height;
@@ -37,16 +38,18 @@ namespace Space_Invaders
 
         public void LoadContent(ContentManager content)
         {
-            cursor = new GraphicalObject(content.Load<Texture2D>("Graphics/Player"), new Vector2(50, 0));
+            cursor = new GraphicalObject("Player", new Vector2(50, 0));
 
-            play = new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "Play Game", Color.White, new Vector2(100, 100));
-            score = new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "High Scores", Color.White, new Vector2(100, 150));
-            end = new TextLine(content.Load<SpriteFont>("Graphics/SpriteFont1"), "End Game", Color.White, new Vector2(100, 200));
+            play = new TextLine("Font", "Play Game", Color.White, new Vector2(100, 100));
+            score = new TextLine("Font", "High Scores", Color.White, new Vector2(100, 150));
+            end = new TextLine("Font", "End Game", Color.White, new Vector2(100, 200));
 
-            invader1 = new Enemy(content.Load<Texture2D>("Graphics/Invader1"), new Vector2(300, 100), 10, 1);
-            invader2 = new Enemy(content.Load<Texture2D>("Graphics/Invader2"), new Vector2(300, 150), 20, 1);
-            invader3 = new Enemy(content.Load<Texture2D>("Graphics/Invader3"), new Vector2(300, 200), 40, 1);
-            ufo = new GraphicalObject(content.Load<Texture2D>("Graphics/UFO"), new Vector2(300, 250));
+            invader1 = new Enemy("Invader1", new Vector2(300, 100), 10, 1);
+            invader2 = new Enemy("Invader2", new Vector2(300, 150), 20, 1);
+            invader3 = new Enemy("Invader3", new Vector2(300, 200), 40, 1);
+            ufo = new GraphicalObject("UFO", new Vector2(300, 250));
+            title = new GraphicalObject("Title", new Vector2(0, 0));
+
         }
 
         public void Update(GameTime gameTime)

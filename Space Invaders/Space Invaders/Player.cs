@@ -43,11 +43,14 @@ namespace Space_Invaders
             set { fired = value; }
         }
 
-        public Player(Texture2D _texture, Vector2 _position) : 
+        public Player(string _texture, Vector2 _position) : 
             base(_texture, _position) 
         {
-            lifeTexture = _texture;
             movement.X = 4;
+        }
+        public void GetLifeTexture()
+        {
+            lifeTexture = texture;
         }
         public override void Update(GameTime gameTime)
         {
