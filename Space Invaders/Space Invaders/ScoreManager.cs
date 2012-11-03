@@ -29,7 +29,7 @@ namespace Space_Invaders
 
         HighScoreClass highScores;
 
-        public bool inputName = true;
+        public bool inputName = false;
 
         int stayTimer = 0;
 
@@ -171,7 +171,7 @@ namespace Space_Invaders
             {
                 
                 stayTimer += gameTime.ElapsedGameTime.Milliseconds;
-                Console.WriteLine(stayTimer);
+                //Console.WriteLine(stayTimer);
             }
             //keyinput
         }
@@ -191,7 +191,7 @@ namespace Space_Invaders
         public Main.MenuButtons KeyCheck()
         {
             KeyboardState ks = Keyboard.GetState();
-            if (ks.GetPressedKeys().Length > 0 && stayTimer >= 200 && inputName == false)
+            if ((Main.km.Key(Keys.Enter) || Main.km.Key(Keys.Space)) && inputName == false)
             {
                 stayTimer = 0;
                 return Main.MenuButtons.CheckScore;

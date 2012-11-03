@@ -14,11 +14,12 @@ namespace Space_Invaders
         bool downPressed = false;
         bool upPressed = false;
         bool backPressed = false;
+        public static bool pleaseRelease = false;
 
         public bool Key(Keys key)
         {
             KeyboardState ks = Keyboard.GetState();
-            if (ks.IsKeyDown(key))
+            if (ks.IsKeyDown(key) && pleaseRelease == false)
             {
                 if (key == Keys.Down && downPressed == false)
                 {
@@ -97,6 +98,10 @@ namespace Space_Invaders
             if (ks.IsKeyUp(Keys.Back))
             {
                 backPressed = false;
+            }
+            if (ks.IsKeyUp(Keys.Space) && ks.IsKeyUp(Keys.Enter))
+            {
+                pleaseRelease = false;
             }
         }
     }

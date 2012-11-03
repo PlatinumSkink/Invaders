@@ -128,6 +128,7 @@ namespace Space_Invaders
 
                             case MenuButtons.CheckScore:
                                 gameState = GameState.End;
+                                KeyBoardManager.pleaseRelease = true;
                                 break;
 
                             case MenuButtons.PlayGame:
@@ -156,6 +157,7 @@ namespace Space_Invaders
                                 break;
                             case MenuButtons.CheckScore:
                                 gameState = GameState.Menu;
+                                KeyBoardManager.pleaseRelease = true;
                                 break;
                         }
                         
