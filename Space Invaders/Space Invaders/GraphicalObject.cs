@@ -13,6 +13,8 @@ namespace Space_Invaders
         protected Texture2D texture;
         public static byte sizeMultiplier = 1;
 
+        public int timer = 0;
+
         public static Main main;
 
         string textureName;

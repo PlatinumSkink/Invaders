@@ -23,7 +23,9 @@ namespace Space_Invaders
         List<GraphicalObject> lifeMarkers = new List<GraphicalObject>();
         List<BlockFormation> blockFormations = new List<BlockFormation>();
         List<Laser> lasers = new List<Laser>();
-        
+        List<GraphicalObject> invaderDestroyed = new List<GraphicalObject>();
+
+        Texture2D destroyedTexture;
 
         UFO UFO;
 
@@ -40,6 +42,9 @@ namespace Space_Invaders
 
         TextLine pointText;
 
+        int overallDifficulty = 0;
+        int levelDifficulty = 0;
+
         public GameManager(int _width, int _height, ContentManager content)
         {
             width = _width;
@@ -53,10 +58,12 @@ namespace Space_Invaders
             this.content = content;
             Laser.playerLaser = content.Load<Texture2D>("Graphics/PlayerLaser");
             Laser.enemyLaser1 = content.Load<Texture2D>("Graphics/Laser");
+            destroyedTexture = content.Load<Texture2D>("Graphics/Destroyed");
 
             Player.SetDeath = content.Load<Texture2D>("Graphics/PlayerDestroyed");
 
-            UFO = new UFO("UFO", new Vector2(-50, 50));
+            UFO = new UFO("UFO", new Vector2(-50, 10), width);
+            UFO.Reset();
         }
 
         public void Reset()
@@ -67,6 +74,8 @@ namespace Space_Invaders
                 invaders.Remove(invaders[i]);
                 i--;
             }*/
+            overallDifficulty = 0;
+            levelDifficulty = 0;
 
             invaders = new List<Enemy>();
 
@@ -81,6 +90,9 @@ namespace Space_Invaders
             {
 
             }*/
+
+            lasers = new List<Laser>();
+            invaderDestroyed = new List<GraphicalObject>();
 
             blockFormations = new List<BlockFormation>();
 
@@ -102,7 +114,7 @@ namespace Space_Invaders
             for (int i = 0; i < 4; i++)
             {
                 blockFormations.Add(new BlockFormation());
-                blockFormations[i].LoadContent(content, blockPoint, i, height);
+                blockFormations[i].LoadContent(content, blockPoint + blockPoint * i, height);
             }
 
             /*    blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(-100, -100), SpriteEffects.None));
@@ -121,7 +133,7 @@ namespace Space_Invaders
                 blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenceOuterCornerLeft"), new Vector2(blockPoint + blockPoint * i + blocks[0].height + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.FlipHorizontally));
             }*/
 
-            UFO.X = -50;
+            UFO.Reset();
 
             NewWave(content);
         }
@@ -153,7 +165,7 @@ namespace Space_Invaders
             }
             foreach (Enemy invader in invaders)
             {
-                if (invaderPosition[invader.Number].Update(gameTime))
+                if (invaderPosition[invader.Number].Update(gameTime, levelDifficulty))
                 {
                     invader.animation++;
                     if (invader.animation > 1)
@@ -189,11 +201,13 @@ namespace Space_Invaders
                 {
                     EnemyPosition.move = new Vector2(-16, 0);
                     Enemy.moveRight = false;
+                    levelDifficulty += 2;
                 }
                 else if (Enemy.moveRight == false && EnemyPosition.move.Y == 16)
                 {
                     EnemyPosition.move = new Vector2(16, 0);
                     Enemy.moveRight = true;
+                    levelDifficulty += 2;
                 }
             }
             for (int i = 0; i < lasers.Count; i++)
@@ -209,6 +223,8 @@ namespace Space_Invaders
                         player.Fired = false;
                         Main.km.PressedSpace = false;
                         Main.currentScore += invaders[j].GetPoints;
+                        invaderDestroyed.Add(new GraphicalObject("Destroyed", new Vector2(invaders[j].X + invaders[j].frameWidth / 2 - destroyedTexture.Width / 2, invaders[j].Y)));
+                        //invaderDestroyed.Last<GraphicalObject>().X = invaders[j].X - invaders[j].frameWidth + (invaderDestroyed[0].width);
                         invaders.Remove(invaders[j]);
                         j--;
                         break;
@@ -221,6 +237,20 @@ namespace Space_Invaders
                         lifeMarkers.Remove(lifeMarkers[lifeMarkers.Count - 1]);
                         player.GetHit = true;
                         break;
+                    }
+                }
+                if (removed == false)
+                {
+                    if (lasers[i].Box().Intersects(UFO.Box()))
+                    {
+                        lasers.Remove(lasers[i]);
+                        i--;
+                        removed = true;
+                        player.Fired = false;
+                        Main.km.PressedSpace = false;
+                        Main.currentScore += UFO.GetPoints;
+                        invaderDestroyed.Add(new GraphicalObject("Destroyed", new Vector2(UFO.X + UFO.width / 2 - destroyedTexture.Width / 2, UFO.Y)));
+                        UFO.Reset();
                     }
                 }
                 if (removed == false)
@@ -256,6 +286,17 @@ namespace Space_Invaders
                     }
                 }
             }
+            for (int i = 0; i < invaderDestroyed.Count; i++)
+            {
+                invaderDestroyed[i].timer += gameTime.ElapsedGameTime.Milliseconds;
+                if (invaderDestroyed[i].timer > 300)
+                {
+                    invaderDestroyed.Remove(invaderDestroyed[i]);
+                    i--;
+                }
+            }
+
+            UFO.Update(gameTime);
             
             if (invaders.Count == 0) 
             {
@@ -307,7 +348,7 @@ namespace Space_Invaders
                 {
                     invaders.Add(new Enemy(null, Vector2.Zero, 0, current));
                     invaderPosition[current].x = (1 + i) * 32 * GraphicalObject.sizeMultiplier;
-                    invaderPosition[current].y = (1 + j) * 25 * GraphicalObject.sizeMultiplier;
+                    invaderPosition[current].y = 30 + (float)((height / 3 * 2) * Math.Sqrt(0.01 * overallDifficulty)) + (1 + j) * 25 * GraphicalObject.sizeMultiplier;
                     /*invaders[current].x = (1 + i) * 25 * GraphicalObject.sizeMultiplier;
                     invaders[current].y = (1 + j) * 25 * GraphicalObject.sizeMultiplier;*/
 
@@ -333,6 +374,12 @@ namespace Space_Invaders
                     current++;
                 }
             }
+            if (overallDifficulty != 0)
+            {
+                Main.currentScore += 1000;
+            }
+            overallDifficulty += 3;
+            levelDifficulty = overallDifficulty * 2;
         }
 
         public void Draw(SpriteBatch sprite)
@@ -344,11 +391,14 @@ namespace Space_Invaders
                 shot.Draw(sprite);
             }
 
+            foreach (var invader in invaderDestroyed)
+            {
+                invader.Draw(sprite);
+            }
             foreach (Enemy invader in invaders)
             {
                 invader.Draw(sprite);
             }
-
             foreach (var marker in lifeMarkers)
             {
                 marker.Draw(sprite);
@@ -357,6 +407,7 @@ namespace Space_Invaders
             {
                 blockFormation.Draw(sprite);
             }
+            UFO.Draw(sprite);
         }
     }
 }

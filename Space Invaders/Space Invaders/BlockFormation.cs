@@ -16,22 +16,22 @@ namespace Space_Invaders
 
         }
 
-        public void LoadContent(ContentManager content, int blockPoint, int blockNumber, int height)
+        public void LoadContent(ContentManager content, int blockPoint, int height)
         {
             blocks = new List<Block>();
 
             blocks.Add(new Block("DefenseBlock", new Vector2(-100, -100), SpriteEffects.None));
 
-            blocks.Add(new Block("DefenseInnerCornerRight", new Vector2(blockPoint + blockPoint * blockNumber - blocks[0].height / 2, height - 100), SpriteEffects.FlipHorizontally));
-            blocks.Add(new Block("DefenseInnerCornerRight", new Vector2(blockPoint + blockPoint * blockNumber + blocks[0].height / 2, height - 100), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber - blocks[0].height - blocks[0].height / 2, height - 100), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber + blocks[0].height + blocks[0].height / 2, height - 100), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber - blocks[0].height - blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
-            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blockPoint * blockNumber + blocks[0].height + blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
-            blocks.Add(new Block("DefenceOuterCornerLeft", new Vector2(blockPoint + blockPoint * blockNumber - blocks[0].height - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-            blocks.Add(new Block("DefenceOuterCornerLeft", new Vector2(blockPoint + blockPoint * blockNumber + blocks[0].height + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.FlipHorizontally));
+            blocks.Add(new Block("DefenseInnerCornerRight", new Vector2(blockPoint - blocks[0].height / 2, height - 100), SpriteEffects.FlipHorizontally));
+            blocks.Add(new Block("DefenseInnerCornerRight", new Vector2(blockPoint + blocks[0].height / 2, height - 100), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint - blocks[0].height - blocks[0].height / 2, height - 100), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blocks[0].height + blocks[0].height / 2, height - 100), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint - blocks[0].height - blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
+            blocks.Add(new Block("DefenseBlock", new Vector2(blockPoint + blocks[0].height + blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
+            blocks.Add(new Block("DefenceOuterCornerLeft", new Vector2(blockPoint - blocks[0].height - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
+            blocks.Add(new Block("DefenceOuterCornerLeft", new Vector2(blockPoint + blocks[0].height + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.FlipHorizontally));
             foreach (var block in blocks)
             {
                 block.GetFrameWidth();

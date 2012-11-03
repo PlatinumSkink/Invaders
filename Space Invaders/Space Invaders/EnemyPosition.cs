@@ -44,10 +44,11 @@ namespace Space_Invaders
         {
 
         }
-        public bool Update(GameTime gameTime)
+        public bool Update(GameTime gameTime, int difficulty)
         {
             Timer += gameTime.ElapsedGameTime.Milliseconds;
-            if (Timer > TimeUntilChange) {
+            if (Timer > TimeUntilChange - (float)((800) * Math.Sqrt(0.02 * difficulty)))
+            {
                 Timer = 0;
                 //TimeUntilChange = (int)(TimeUntilChange * 0.99);
                 position += move;
