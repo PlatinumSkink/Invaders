@@ -18,6 +18,7 @@ namespace Space_Invaders
 
         HighScoreClass highScore;
 
+        //KeyboardManager to deal with everything.
         public static KeyBoardManager km = new KeyBoardManager();
 
         GameManager gameManager;
@@ -30,13 +31,15 @@ namespace Space_Invaders
 
         public static int currentScore = 0;
 
+        //The different states of the game.
         enum GameState
         {
             Menu,
             Game,
-            End
+            Score
         }
 
+        //Which button has been pressed and where it leads.
         public enum MenuButtons
         {
             Nothing,
@@ -68,6 +71,7 @@ namespace Space_Invaders
             base.Initialize();
         }
 
+        //Load width/height, load the scoreboard, set up the managers.
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -101,21 +105,22 @@ namespace Space_Invaders
             km.Update();
             switch (gameState)
             {
+                    //If in game, update everything and check if it is game over.
                 case GameState.Game:
                     {
                         gameManager.Update(gameTime);
 
                         if (gameManager.CheckEnd())
                         {
-                            gameState = GameState.End;
+                            //Go to score if Game Over.
+                            gameState = GameState.Score;
                         }
                         break;
                     }
+                    //If in menu, check if buttons are pressed, and if so, do actions.
                 case GameState.Menu:
                     {
                         MenuButtons menuButtons = MenuButtons.Nothing;
-
-                        //(int buttonPressed = menuManager.KeyCheck(this);
 
                         menuButtons = menuManager.KeyCheck();
 
@@ -127,7 +132,7 @@ namespace Space_Invaders
                                 break;
 
                             case MenuButtons.CheckScore:
-                                gameState = GameState.End;
+                                gameState = GameState.Score;
                                 KeyBoardManager.pleaseRelease = true;
                                 break;
 
@@ -143,7 +148,8 @@ namespace Space_Invaders
                         }
                         break;
                     }
-                case GameState.End:
+                    //If in menu, check if he wants back by pressing things.
+                case GameState.Score:
                     {
                         scoreManager.Update(gameTime);
 
@@ -167,6 +173,7 @@ namespace Space_Invaders
             base.Update(gameTime);
         }
 
+        //Draw things depending on what enum is active.
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -185,7 +192,7 @@ namespace Space_Invaders
                         menuManager.Draw(spriteBatch);
                         break;
                     }
-                case GameState.End:
+                case GameState.Score:
                     {
                         scoreManager.Draw(spriteBatch);
                         break;

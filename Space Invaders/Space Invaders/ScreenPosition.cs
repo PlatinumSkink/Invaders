@@ -9,10 +9,12 @@ namespace Space_Invaders
 {
     abstract class ScreenPosition
     {
+        //An abstract class that contains only a position.
         protected Vector2 position;
 
         public static ContentManager content;
 
+        //X and Y to get the position.
         public float X
         {
             get
@@ -35,6 +37,7 @@ namespace Space_Invaders
                 position.Y = value;
             }
         }
+        //Only one variable necessary, but it is the one furthest up in the heirarchy. 
         public ScreenPosition(Vector2 _position)
         {
             position = _position;

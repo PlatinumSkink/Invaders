@@ -36,6 +36,7 @@ namespace Space_Invaders
         int textSpaceY = 30;
         int textSpaceX = 50;
 
+        //Add all text.
         public ScoreManager(HighScoreClass _highScores, ContentManager content)
         {
             places = new List<TextLine>();
@@ -58,16 +59,21 @@ namespace Space_Invaders
                 scores.Add(new TextLine("Font", "", Color.White, new Vector2(textSpaceX * 3, textSpaceY + textSpaceY * i)));
                 names.Add(new TextLine("Font", "", Color.White, new Vector2(textSpaceX * 6, textSpaceY + textSpaceY * i)));
             }
+
+            //Get the score from the files.
             GetScore();
         }
         public void Load()
         {
-
+            //No graphics here.
         }
+
+        //Update everything.
         public void Update(GameTime gameTime)
         {
             if (inputName == true) 
             {
+                //If you are inputting a name, blink the last "|" every 800 milliseconds.
                 twinkleTimer += gameTime.ElapsedGameTime.Milliseconds;
                 if (twinkleTimer > 800)
                 {
@@ -89,16 +95,21 @@ namespace Space_Invaders
                 {
                     input.GetText = "Input name: " + name + " ";
                 }
-                //char key = Main.km.InputKey();
+                
+                //If pressed anything is true, yet you are not pressing anything, turn boolean false.
                 if (Main.km.InputKey() == false && pressedAnything == true)
                 {
                     pressedAnything = false;
                 }
+
+                //Makes this char something that would never be used. Hopefully.
                 char last = '$';
                 
                 char remember = ' ';
                 int lastNum = 0;
                 bool destroy = false;
+
+                //If pressed back, make up the entire name again but with one less char.
                 if (Main.km.Key(Keys.Back))
                 {
                     //input.GetText = "";
@@ -109,6 +120,8 @@ namespace Space_Invaders
                         name += rememberName[i];
                     }
                 }
+
+                //If pressed enter, send in the new score along with the inputed name. Reset score afterwards and get new scores.
                 if (Main.km.Key(Keys.Enter)) 
                 {
                     inputName = false;
@@ -119,6 +132,8 @@ namespace Space_Invaders
                     highScores.LoadScores();
                     GetScore();
                 }
+
+                //If pressed a button, input the character pressed into the string where you are writing your name.
                 if (Main.km.InputKey()) {
                     KeyGrabber.InboundCharEvent += (inboundCharacter) =>
                     {
@@ -134,6 +149,8 @@ namespace Space_Invaders
                                 return;
 
                             name += inboundCharacter;
+
+                            //In order to counter writing an infinite number of the same character which it was doing, this program here erases the new character if it is the same as the last one.
                             if (name != null)
                             {
                                 for (int i = 0; i < name.Length; i++)
@@ -155,7 +172,8 @@ namespace Space_Invaders
                                     lastNum = i;
                                 }
                             }
-                            //input.GetText = name;
+                            
+                            //In the end, insert the last pressed character into "last".
                             if (name != null)
                             {
                                 last = name[lastNum];
@@ -163,18 +181,15 @@ namespace Space_Invaders
                         }
                     };
                 }
+                //If it is anything but $, insert it into the string.
                 if (last != '$') {
                     input.GetText += last;
                 }
             }
-            if (stayTimer <= 2000) 
-            {
-                
-                stayTimer += gameTime.ElapsedGameTime.Milliseconds;
-                //Console.WriteLine(stayTimer);
-            }
             //keyinput
         }
+
+        //Go through the two lists of scores and names, and add them on the texts on the screen.
         private void GetScore()
         {
             for (int i = 0; i < scores.Count; i++)
@@ -188,9 +203,9 @@ namespace Space_Invaders
 
         }
 
+        //If pressed space or enter, return to the main menu.
         public Main.MenuButtons KeyCheck()
         {
-            KeyboardState ks = Keyboard.GetState();
             if ((Main.km.Key(Keys.Enter) || Main.km.Key(Keys.Space)) && inputName == false)
             {
                 stayTimer = 0;
@@ -199,6 +214,7 @@ namespace Space_Invaders
             return Main.MenuButtons.Nothing;
         }
 
+        //Draw.
         public void Draw(SpriteBatch sprite)
         {
             foreach (var place in places)

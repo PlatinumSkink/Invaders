@@ -8,6 +8,8 @@ namespace Space_Invaders
 {
     class EnemyPosition
     {
+        //The enemy position is its own class, while the enemy itself is another. This to make movement easier.
+
         public static bool moveRight = true;
         public static bool hitWall = false;
 
@@ -17,6 +19,7 @@ namespace Space_Invaders
         public static Vector2 overallPosition;
         Vector2 position = Vector2.Zero;
 
+        //X and Y regained.
         public float x
         {
             get
@@ -44,6 +47,7 @@ namespace Space_Invaders
         {
 
         }
+        //Update moves the position every now and then. With higher difficulty, it will move more often.
         public bool Update(GameTime gameTime, int difficulty)
         {
             Timer += gameTime.ElapsedGameTime.Milliseconds;

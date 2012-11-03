@@ -9,6 +9,8 @@ namespace Space_Invaders
 {
     class Enemy : Spaceship
     {
+        //Enemies that stand in formation and are seeking down towards the player.
+
         public static bool moveRight = true;
         public static bool hitWall = false;
 
@@ -16,6 +18,7 @@ namespace Space_Invaders
 
         public byte Number = 0;
 
+        //Framewidth becomes the width of an animated thing.
         public int frameWidth
         {
             get { return width / 2; }
@@ -36,6 +39,7 @@ namespace Space_Invaders
             Number = _Number;
         }
 
+        //Update everything. Move the enemy to the same position as its corresponding EnemyPosition. If too far on the left or right, return a "true" so that the enemies can proceed closer to the player.
         public bool EnemyUpdate(GameTime gameTime, EnemyPosition invaderPosition)
         {
             X = invaderPosition.x - frameWidth / 2;
@@ -49,46 +53,21 @@ namespace Space_Invaders
             }
             
             return false;
-            /*if (hitWall == true)
-            {
-                direction.X = 0;
-                direction.Y = 1;
-            }
-            else if (moveRight == true)
-            {
-                direction.X = 1;
-                direction.Y = 0;
-            }
-            else
-            {
-                direction.X = -1;
-                direction.Y = 0;
-            }
-            base.Update(gameTime);
-            if (moveRight == true && x > main.width - width) 
-            {
-                return true;
-            }
-            else if (moveRight == false && x < 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }*/
         }
 
+        //Rectangle for an animated enemy. Half the size of a normal.
         public override Rectangle Box()
         {
             return new Rectangle((int)X, (int)Y, width / 2, height);
         }
 
+        //Source rectangle.
         public Rectangle EnemyBox()
         {
             return new Rectangle((int)animation * frameWidth, (int)0, frameWidth, height);
         }
 
+        //Draw animated enemy.
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (texture != null)

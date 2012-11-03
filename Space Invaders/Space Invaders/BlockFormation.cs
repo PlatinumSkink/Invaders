@@ -10,12 +10,15 @@ namespace Space_Invaders
 {
     class BlockFormation
     {
+        //BlockFormation is a class which deals with putting up the defence blocks in a certain manner.
+
         List<Block> blocks = new List<Block>();
         public BlockFormation()
         {
 
         }
 
+        //Put up all blocks, with corresponding graphics, in the place where they belong using the origin position of the BlockFormation. End it all with getting the FrameWidth.
         public void LoadContent(ContentManager content, int blockPoint, int height)
         {
             blocks = new List<Block>();
@@ -38,6 +41,7 @@ namespace Space_Invaders
             }
         }
 
+        //Check if the laser has hit any of the blocks in the block-formation. If so, reduce the lives of the block with one and return a "true" so the laser can be removed.
         public bool CollisionCheck(Laser laser)
         {
             for (int j = 0; j < blocks.Count; j++)
@@ -56,6 +60,7 @@ namespace Space_Invaders
             return false;
         }
 
+        //Draw each block.
         public void Draw(SpriteBatch sprite)
         {
             foreach (var block in blocks) 

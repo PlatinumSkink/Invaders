@@ -9,6 +9,8 @@ namespace Space_Invaders
 {
     class UFO : Spaceship
     {
+        //UFO, the spaceship that will be flying on top of the course.
+
         int next;
         bool notMoving = true;
         int screenWidth;
@@ -18,6 +20,7 @@ namespace Space_Invaders
 
         static Random rand = new Random();
 
+        //Get the number of points it will provide.
         public int GetPoints
         {
             get { return points; }
@@ -28,8 +31,11 @@ namespace Space_Invaders
         {
             screenWidth = _screenWidth;
         }
+
+        //Update the ship.
         public override void Update(GameTime gameTime)
         {
+            //If it isn't moving, have the timer going. When it is over "next" (next time it should go) set a direction and a speed to it. Direction is to take it over the field, no matter which side it is on.
             if (notMoving == true)
             {
                 timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -49,6 +55,7 @@ namespace Space_Invaders
             }
             else
             {
+                //If it is moving, reset it as soon as it goes off-stage.
                 if ((X < -width && direction.X == -1) ||  (X > screenWidth && direction.X == 1))
                 {
                     Reset();
@@ -56,7 +63,8 @@ namespace Space_Invaders
             }
             base.Update(gameTime);
         }
-
+        
+        //Reset the UFO. Reset the timer, direction and speed. Randomize the next points between 100 and 300. Randomize what side it will appear from. Randomize when the ship will appear next.
         public void Reset()
         {
             timer = 0;
@@ -74,7 +82,7 @@ namespace Space_Invaders
             {
                 X = -width - 50;
             }
-            next = rand.Next(0, 20000);
+            next = rand.Next(1000, 20000);
         }
     }
 }

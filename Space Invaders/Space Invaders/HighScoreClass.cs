@@ -15,6 +15,8 @@ namespace Space_Invaders
 {
     class HighScoreClass
     {
+        //Class which contains my High Scores.
+
         List<int> highScorePoints = new List<int>();
         List<string> highScoreNames = new List<string>();
 
@@ -25,6 +27,7 @@ namespace Space_Invaders
             content = _content;
         }
 
+        //Get scores from the High Score Class.
         public int GetScore(int i)
         {
             return highScorePoints[i];
@@ -33,6 +36,8 @@ namespace Space_Invaders
         {
             return highScoreNames[i];
         }
+
+        //Load the scores from the text document. The numbers are added to int Points, while the names become the names. If there is no file, create one and try again.
         public void LoadScores()
         {
             try
@@ -77,6 +82,8 @@ namespace Space_Invaders
                 LoadScores();
             }
         }
+
+        //Send in the current scores into the text-file.
         public void SetScores()
         {
             FileStream fw = new FileStream(content.RootDirectory + "\\HighScore.txt", FileMode.Create);
@@ -89,6 +96,8 @@ namespace Space_Invaders
             sw.Close();
             fw.Close();
         }
+
+        //Insert a new score. The variable "placed" is turned on when it finds that this score is higher than the one in that place, and all the rest are pushed downwards with aid of "remember" variables.
         public void NewScore(int score, string name)
         {
             bool placed = false;
@@ -114,6 +123,8 @@ namespace Space_Invaders
                 }
             }
         }
+
+        //I don't remember what this was for.
         public void Push(int score, string name)
         {
 

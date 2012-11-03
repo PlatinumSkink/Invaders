@@ -10,6 +10,8 @@ namespace Space_Invaders
 {
     class Player : Spaceship
     {
+        //The player, who is to be able to move left and right, fire, and take damage.
+
         bool pressedSpace = false;
         bool fired = false;
 
@@ -17,8 +19,11 @@ namespace Space_Invaders
         int hitTimer = 0;
         int timeHit = 1000;
 
+        //One texture for life and one for death.
         static Texture2D deathTexture;
         static Texture2D lifeTexture;
+
+        //GetSet for all those earlier variables.
 
         public static Texture2D SetDeath
         {
@@ -52,9 +57,11 @@ namespace Space_Invaders
         {
             lifeTexture = texture;
         }
+
+        //Update the player.
         public override void Update(GameTime gameTime)
         {
-            KeyboardState keyboard = Keyboard.GetState();
+            //If not hit, enable keyboard and life texture. If outside the stage, put back on stage. If hit, stay where you are until the timer says you can move.
             if (hit == false)
             {
                 texture = lifeTexture;
@@ -80,6 +87,8 @@ namespace Space_Invaders
                 }
             }
         }
+
+        //Change direction with left and right. Space becomes true upon pressing space, which allows firing laser.
         protected void KeyInput()
         {
             if (Main.km.Key(Keys.Right)) 

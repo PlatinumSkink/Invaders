@@ -56,8 +56,10 @@ namespace Space_Invaders
         private void LoadContent(ContentManager content)
         {
             this.content = content;
+
+            //Insert the graphics into the static variables.
             Laser.playerLaser = content.Load<Texture2D>("Graphics/PlayerLaser");
-            Laser.enemyLaser1 = content.Load<Texture2D>("Graphics/Laser");
+            Laser.enemyLaser = content.Load<Texture2D>("Graphics/Laser");
             destroyedTexture = content.Load<Texture2D>("Graphics/Destroyed");
 
             Player.SetDeath = content.Load<Texture2D>("Graphics/PlayerDestroyed");
@@ -66,36 +68,18 @@ namespace Space_Invaders
             UFO.Reset();
         }
 
+        //Reset everything for a new round of Space Invaders.
         public void Reset()
         {
             Main.currentScore = 0;
-            /*for (int i = 0; i < invaders.Count; i++)
-            {
-                invaders.Remove(invaders[i]);
-                i--;
-            }*/
             overallDifficulty = 0;
             levelDifficulty = 0;
 
             invaders = new List<Enemy>();
-
-            /*for (int i = 0; i < invaderPosition.Count; i++)
-            {
-                invaderPosition.Remove(invaderPosition[i]);
-                i--;
-            }*/
-
             invaderPosition = new List<EnemyPosition>();
-            /*for () 
-            {
-
-            }*/
-
             lasers = new List<Laser>();
             invaderDestroyed = new List<GraphicalObject>();
-
             blockFormations = new List<BlockFormation>();
-
             lifeMarkers = new List<GraphicalObject>();
             
             player = new Player("Player", new Vector2(width / 2, height - 40));
@@ -117,31 +101,19 @@ namespace Space_Invaders
                 blockFormations[i].LoadContent(content, blockPoint + blockPoint * i, height);
             }
 
-            /*    blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(-100, -100), SpriteEffects.None));
-
-            for (int i = 0; i < 4; i++)
-            {
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseInnerCornerRight"), new Vector2(blockPoint + blockPoint * i - blocks[0].height / 2, height - 100), SpriteEffects.FlipHorizontally));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseInnerCornerRight"), new Vector2(blockPoint + blockPoint * i + blocks[0].height / 2, height - 100), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i - blocks[0].height - blocks[0].height / 2, height - 100), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i + blocks[0].height + blocks[0].height / 2, height - 100), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i - blocks[0].height - blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenseBlock"), new Vector2(blockPoint + blockPoint * i + blocks[0].height + blocks[0].height / 2, height - 100 + blocks[0].height), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenceOuterCornerLeft"), new Vector2(blockPoint + blockPoint * i - blocks[0].height - blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.None));
-                blocks.Add(new Block(content.Load<Texture2D>("Graphics/DefenceOuterCornerLeft"), new Vector2(blockPoint + blockPoint * i + blocks[0].height + blocks[0].height / 2, height - 100 - blocks[0].height), SpriteEffects.FlipHorizontally));
-            }*/
-
             UFO.Reset();
 
             NewWave(content);
         }
 
+        //Update everything.
         public void Update(GameTime gameTime)
         {
+            //Update positions and score.
             player.Update(gameTime);
             pointText.GetText = Main.currentScore.ToString();
+
+            //Timer for when enemy shoots next. If over the time, a randomly chosen enemy among those still living will fire.
             shootTimer += gameTime.ElapsedGameTime.Milliseconds;
             if (shootTimer >= shootNext) 
             {
@@ -150,19 +122,27 @@ namespace Space_Invaders
                 int enemy = rand.Next(0, invaders.Count);
                 lasers.Add(new Laser("Laser", new Vector2(invaders[enemy].X + invaders[enemy].width / 2 - 1, invaders[enemy].Y + 10), false));
             }
+
+            //If the player presses space while there is no shot in play and he isn't hit at the moment, the player fires a laser.
             if (player.Space == true && player.Fired == false && player.GetHit == false) 
             {
                 player.Fired = true;
                 lasers.Add(new Laser(null, new Vector2(player.X + player.width / 2 - 1, player.Y - 10), true));
             }
+
+            //Update all lasers.
             foreach (var shot in lasers)
             {
                 shot.Update(gameTime);
             }
+
+            //Update lives.
             for (int i = 0; i < lifeMarkers.Count; i++)
             {
                 lifeMarkers[i].X = width - lifeMarkers[i].width * (1 + i);
             }
+
+            //Update the enemy positions. Shift animation while doing so. 
             foreach (Enemy invader in invaders)
             {
                 if (invaderPosition[invader.Number].Update(gameTime, levelDifficulty))
@@ -172,17 +152,15 @@ namespace Space_Invaders
                     {
                         invader.animation = 0;
                     }
+                    //If an enemy hits the side of the course, shift which side all enemies are heading towards. But start with a boolean.
                     if (invader.EnemyUpdate(gameTime, invaderPosition[invader.Number]) || EnemyPosition.move.Y == 16)
                     {
                         shift = true;
                     }
                 }
             }
-            /*if (EnemyPosition.move.Y == 16) 
-            {
-                EnemyPosition.move = new Vector2(16, 0);
-            }*/
 
+            //If shifting side, first check if it is when hitting the wall or not. If hit the wall, go downwards. If not, start going in the opposite direction they headed in earlier.
             if (shift == true)
             {
                 shift = false;
@@ -210,11 +188,17 @@ namespace Space_Invaders
                     levelDifficulty += 2;
                 }
             }
+
+            //Checking laser collisions.
             for (int i = 0; i < lasers.Count; i++)
             {
+                //Boolean for the case when the laser has already been removed.
                 bool removed = false;
+
+                //If hit invader.
                 for (int j = 0; j < invaders.Count; j++)
                 {
+                    //If the laser if your own (friendly), remove invader, add its score to the main score and place destruction graphical object in the invader's place.
                     if (lasers[i].Box().Intersects(invaders[j].Box()) && lasers[i].GetFriendly == true) 
                     {
                         lasers.Remove(lasers[i]);
@@ -224,11 +208,14 @@ namespace Space_Invaders
                         Main.km.PressedSpace = false;
                         Main.currentScore += invaders[j].GetPoints;
                         invaderDestroyed.Add(new GraphicalObject("Destroyed", new Vector2(invaders[j].X + invaders[j].frameWidth / 2 - destroyedTexture.Width / 2, invaders[j].Y)));
-                        //invaderDestroyed.Last<GraphicalObject>().X = invaders[j].X - invaders[j].frameWidth + (invaderDestroyed[0].width);
                         invaders.Remove(invaders[j]);
                         j--;
                         break;
                     }
+                }
+                if (removed == false)
+                {
+                    //If an unfriendly laser hits player. Remove laser, subtract a life-marker and set the player's hit-boolean to true.
                     if (lasers[i].Box().Intersects(player.Box()) && lasers[i].GetFriendly == false && player.GetHit == false)
                     {
                         lasers.Remove(lasers[i]);
@@ -241,6 +228,7 @@ namespace Space_Invaders
                 }
                 if (removed == false)
                 {
+                    //If hit UFO, exactly the same as if hit an invader.
                     if (lasers[i].Box().Intersects(UFO.Box()))
                     {
                         lasers.Remove(lasers[i]);
@@ -255,6 +243,7 @@ namespace Space_Invaders
                 }
                 if (removed == false)
                 {
+                    //If laser hits a block of defence, remove the laser and subtract one point of life from it.
                     for (int j = 0; j < blockFormations.Count; j++)
                     {
                         if (blockFormations[j].CollisionCheck(lasers[i]))
@@ -274,6 +263,7 @@ namespace Space_Invaders
                 }
                 if (removed == false)
                 {
+                    //If the laser flies out of the course, remove it.
                     if (lasers[i].Y < 0 - lasers[i].height || lasers[i].Y > height)
                     {
                         if (lasers[i].GetFriendly == true)
@@ -286,6 +276,8 @@ namespace Space_Invaders
                     }
                 }
             }
+
+            //Update the timer on the destroyed enemy. After 300 miliseconds, remove the graphic.
             for (int i = 0; i < invaderDestroyed.Count; i++)
             {
                 invaderDestroyed[i].timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -298,6 +290,7 @@ namespace Space_Invaders
 
             UFO.Update(gameTime);
             
+            //When there is no enemies left, remove all positions (because we'll be creating new ones) and start the new wave.
             if (invaders.Count == 0) 
             {
                 for (int i = 0; i < invaderPosition.Count; i++)
@@ -309,6 +302,7 @@ namespace Space_Invaders
             }
         }
 
+        //To check for the end of the game. Check if the enemy is further down than the player of if the life markers are all gone. If so, return true.
         public bool CheckEnd ()
         {
             foreach (var invader in invaders)
@@ -325,6 +319,7 @@ namespace Space_Invaders
             return false;
         }
 
+        //When calling a new wave. Player gains a life, new invader positions are added.
         protected void NewWave(ContentManager content)
         {
             byte current = 0;
@@ -342,6 +337,7 @@ namespace Space_Invaders
             Enemy.moveRight = true;
             EnemyPosition.move = new Vector2(16, 0);
 
+            //Create new invaders. Two loops, one on the vertical and one on the horisontal.
             for (int j = 0; j < 5; j++)
             {
                 for (int i = 0; i < 11; i++)
@@ -349,9 +345,8 @@ namespace Space_Invaders
                     invaders.Add(new Enemy(null, Vector2.Zero, 0, current));
                     invaderPosition[current].x = (1 + i) * 32 * GraphicalObject.sizeMultiplier;
                     invaderPosition[current].y = 30 + (float)((height / 3 * 2) * Math.Sqrt(0.01 * overallDifficulty)) + (1 + j) * 25 * GraphicalObject.sizeMultiplier;
-                    /*invaders[current].x = (1 + i) * 25 * GraphicalObject.sizeMultiplier;
-                    invaders[current].y = (1 + j) * 25 * GraphicalObject.sizeMultiplier;*/
 
+                    //Depending on what row, they get different graphics and points to provide the player.
                     if (j == 0)
                     {
                         invaders[current].graphic = content.Load<Texture2D>("Graphics/Invader3");
@@ -374,14 +369,16 @@ namespace Space_Invaders
                     current++;
                 }
             }
+            //If it isn't the first time calling, get 1000 points for destroyed wave. Increase difficulty.
             if (overallDifficulty != 0)
             {
                 Main.currentScore += 1000;
             }
-            overallDifficulty += 3;
+            overallDifficulty += 2;
             levelDifficulty = overallDifficulty * 2;
         }
 
+        //Draw everything.
         public void Draw(SpriteBatch sprite)
         {
             player.Draw(sprite);

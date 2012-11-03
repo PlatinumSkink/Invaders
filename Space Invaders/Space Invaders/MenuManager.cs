@@ -15,10 +15,6 @@ namespace Space_Invaders
         TextLine score;
         TextLine end;
 
-        Enemy invader1;
-        Enemy invader2;
-        Enemy invader3;
-        GraphicalObject ufo;
         GraphicalObject title;
 
         int width;
@@ -36,25 +32,24 @@ namespace Space_Invaders
             LoadContent(content);
         }
 
+        //Load everything and set position.
         public void LoadContent(ContentManager content)
         {
-            cursor = new GraphicalObject("Player", new Vector2(50, 0));
+            cursor = new GraphicalObject("Player", new Vector2(190, 0));
 
-            play = new TextLine("Font", "Play Game", Color.White, new Vector2(100, 100));
-            score = new TextLine("Font", "High Scores", Color.White, new Vector2(100, 150));
-            end = new TextLine("Font", "End Game", Color.White, new Vector2(100, 200));
+            play = new TextLine("Font", "Play Game", Color.White, new Vector2(240, 200));
+            score = new TextLine("Font", "High Scores", Color.White, new Vector2(240, 250));
+            end = new TextLine("Font", "End Game", Color.White, new Vector2(240, 300));
 
-            invader1 = new Enemy("Invader1", new Vector2(300, 100), 10, 1);
-            invader2 = new Enemy("Invader2", new Vector2(300, 150), 20, 1);
-            invader3 = new Enemy("Invader3", new Vector2(300, 200), 40, 1);
-            ufo = new GraphicalObject("UFO", new Vector2(300, 250));
             title = new GraphicalObject("Title", new Vector2(0, 0));
-
+            title.X = width / 2 - title.width / 2;
+            title.Y = 25;
         }
 
+        //If press buttun up or down, switch cursor's location to appropriate place.
         public void Update(GameTime gameTime)
         {
-            cursor.Y = 100 + 50 * cursorNumber;
+            cursor.Y = 200 + 50 * cursorNumber;
             if (Main.km.Key(Keys.Down))
             {
                 cursorNumber++;
@@ -73,6 +68,7 @@ namespace Space_Invaders
             }
         }
 
+        //Upon pressing enter or space, check where the curson is located and return appropriate enum to send the player where he wants to go.
         public Main.MenuButtons KeyCheck()
         {
             if (Main.km.Key(Keys.Enter) || Main.km.Key(Keys.Space))
@@ -93,18 +89,16 @@ namespace Space_Invaders
             return Main.MenuButtons.Nothing;
         }
 
+        //Draw everything in the menu.
         public void Draw(SpriteBatch sprite)
         {
             cursor.Draw(sprite);
 
+            title.Draw(sprite);
+
             play.Draw(sprite);
             score.Draw(sprite);
             end.Draw(sprite);
-
-            invader1.Draw(sprite);
-            invader2.Draw(sprite);
-            invader3.Draw(sprite);
-            ufo.Draw(sprite);
         }
     }
 }

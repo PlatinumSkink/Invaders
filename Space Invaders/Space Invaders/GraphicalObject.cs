@@ -10,6 +10,8 @@ namespace Space_Invaders
 {
     class GraphicalObject : ScreenPosition
     {
+        //An object that is only a piece of graphics and a location.
+
         protected Texture2D texture;
         public static byte sizeMultiplier = 1;
 
@@ -19,6 +21,7 @@ namespace Space_Invaders
 
         string textureName;
 
+        //Width and height to get the width and height of the graphics.
         public int width
         {
             get
@@ -65,6 +68,7 @@ namespace Space_Invaders
             Load(textureName);
         }
 
+        //Sending a string to Load will result in it loading the graphical bit with that name in the folder Graphics.
         public void Load(string route)
         {
             if (route != null)
@@ -73,11 +77,13 @@ namespace Space_Invaders
             }
         }
 
+        //The rectangle which will be used for collisions everywhere.
         public virtual Rectangle Box()
         {
             return new Rectangle((int)X, (int)Y, width, height);
         }
 
+        //If there is texture, draw.
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (texture != null)

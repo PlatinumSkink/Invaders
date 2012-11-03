@@ -9,6 +9,7 @@ namespace Space_Invaders
 {
     public class KeyGrabber
     {
+        //Class for grabbing keys and making them into chars for my use. 
         public class KeyFilter : IMessageFilter
         {
             public bool PreFilterMessage(ref Message m)

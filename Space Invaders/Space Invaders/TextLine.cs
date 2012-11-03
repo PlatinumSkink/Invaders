@@ -9,11 +9,13 @@ namespace Space_Invaders
 {
     class TextLine : ScreenPosition
     {
+        //Text class including font and text, and inheriting a location.
         string text;
         SpriteFont font;
         string fontName;
         Color color;
 
+        //Setting text.
         public string GetText
         {
             get { return text; }
@@ -29,11 +31,14 @@ namespace Space_Invaders
             
             color = _color;
         }
+
+        //Loading a font from the string sent.
         public void LoadFont(string _font)
         {
             font = content.Load<SpriteFont>("Graphics/" + _font);
         }
 
+        //DrawString special function.
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, text, position, color);

@@ -16,6 +16,7 @@ namespace Space_Invaders
         bool backPressed = false;
         public static bool pleaseRelease = false;
 
+        //If key is pressed, a boolean tells so. Boolean switches to false if release. As so, can only press button twice if release and press again.
         public bool Key(Keys key)
         {
             KeyboardState ks = Keyboard.GetState();
@@ -66,6 +67,7 @@ namespace Space_Invaders
             return false;
         }
 
+        //Function to check if any key at all is pressed.
         public bool InputKey()
         {
             KeyboardState ks = Keyboard.GetState();
@@ -76,6 +78,7 @@ namespace Space_Invaders
             return false;
         }
 
+        //If released, appropriate boolean will be turned to false.
         public void Update()
         {
             KeyboardState ks = Keyboard.GetState();
